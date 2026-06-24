@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Contacto } from '../../Interfaces/contacto.interface';
+import type { Contacto } from '../../Interfaces/contacto.interface';
 
 type Props = {
   onSave: (data: Omit<Contacto, 'id'>, id?: string) => void;

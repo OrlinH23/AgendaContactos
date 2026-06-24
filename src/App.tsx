@@ -1,49 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import { Contacto } from '../Interfaces/contacto.interface';
-import ContactForm from './components/ContactForm';
-import ContactList from './components/ContactList';
-import * as service from './services/contactService';
+import Sidebar from "./components/SideBar";
+import CrearContacto from "./pages/CrearContacto";
+import ListaContactos from "./pages/ListaContactos";
+import Calendario from "./pages/Calendario";
+import Notas from "./pages/Notas";
+import Dashboard from "./pages/Dashboard";
+import { useContactos } from "./Hooks/useContactos";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
-  const [contacts, setContacts] = useState<Contacto[]>([]);
-  const [editing, setEditing] = useState<Contacto | null>(null);
-
-  useEffect(() => {
-    setContacts(service.getContacts());
-  }, []);
-
-  function handleSave(data: Omit<Contacto, 'id'>, id?: string) {
-    if (id) {
-      const updated: Contacto = { id, ...data } as Contacto;
-      service.updateContact(updated);
-    } else {
-      service.addContact(data);
-    }
-    setContacts(service.getContacts());
-    setEditing(null);
-  }
-
-  function handleDelete(id: string) {
-    if (!confirm('Eliminar contacto?')) return;
-    service.deleteContact(id);
-    setContacts(service.getContacts());
-  }
-
-  function handleEdit(c: Contacto) {
-    setEditing(c);
-  }
+  const {
+    contacts,
+    editing,
+    handleSave,
+    handleDelete,
+    handleEdit,
+    handleCancel,
+  } = useContactos();
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-semibold mb-4">Agenda de Contactos</h1>
-      <div className="flex gap-6">
-        <div className="flex-1">
-          <ContactList contacts={contacts} onEdit={handleEdit} onDelete={handleDelete} />
+    <div className="flex min-h-screen">
+      <Sidebar />
+
+      <main className="flex-1 bg-slate-100 px-6 py-8">
+        <div className="max-w-6xl mx-auto">
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+
+            <Route
+              path="/crear"
+              element={
+                <CrearContacto
+                  editing={editing}
+                  onSave={handleSave}
+                  onCancel={handleCancel}
+                />
+              }
+            />
+
+            <Route
+              path="/contactos"
+              element={
+                <ListaContactos
+                  contacts={contacts}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+              }
+            />
+
+            <Route path="/calendario" element={<Calendario />} />
+            <Route path="/notas" element={<Notas />} />
+          </Routes>
         </div>
-        <aside className="w-96">
-          <ContactForm onSave={handleSave} contact={editing} onCancel={() => setEditing(null)} />
-        </aside>
-      </div>
+      </main>
     </div>
   );
 }

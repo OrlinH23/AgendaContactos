@@ -1,4 +1,4 @@
-import { Contacto } from '../../Interfaces/contacto.interface';
+import type { Contacto } from '../../Interfaces/contacto.interface';
 
 const STORAGE_KEY = 'agenda_contactos_v1';
 
@@ -13,7 +13,7 @@ function readStorage(): Contacto[] {
   }
 }
 
-function writeStorage(items: Contacto[]) {
+function writeStorage(items: Contacto[]) { 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
 }
 
