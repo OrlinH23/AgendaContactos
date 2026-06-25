@@ -17,57 +17,49 @@ If you are developing a production application, we recommend updating the config
 
 ```js
 export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+  # Agenda de Contactos (Proyecto universitario)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+  Aplicación React + TypeScript creada con Vite. Este commit añade la funcionalidad pedida:
 
-      // Other configs...
-    ],
-    languageOptions: {
+  - Gestión de contactos (CRUD) en el cliente.
+  - Formularios para crear/editar contactos.
+  - Persistencia usando LocalStorage.
+  - Estilos únicamente con Tailwind CSS.
+
+  Archivos claves añadidos/modificados:
+
+  - `src/services/contactService.ts` — servicio para leer/escribir en LocalStorage.
+  - `src/components/ContactForm.tsx` — formulario crear/editar.
+  - `src/components/ContactList.tsx` — listado con acciones editar/eliminar.
+  - `src/App.tsx` — integración del flujo CRUD.
+  - `src/index.css`, `tailwind.config.cjs`, `postcss.config.cjs` — configuración e integración de Tailwind.
+
+  Cómo probar localmente:
+
+  1. Instalar dependencias:
+
+  ```bash
+  npm install
+  ```
+
+  2. Ejecutar el servidor de desarrollo:
+
+  ```bash
+  npm run dev
+  ```
+
+  Uso rápido:
+
+  - Abrir la app en el navegador (Vite mostrará la URL, normalmente `http://localhost:5173`).
+  - Añadir un contacto en el formulario; podrá editarse o eliminarse desde la lista.
+  - Los datos se guardan en LocalStorage bajo la clave `agenda_contactos_v1`.
+
+  Commit sugerido (ejecutar localmente):
+
+  ```bash
+  git add .
+  git commit -m "feat: add contact management (CRUD) with LocalStorage and Tailwind"
+  ```
+
+  Si quieres que haga el commit por ti en el repositorio, dímelo y lo intento (necesitaré permisos/generar el commit desde aquí si deseas). Si prefieres, puedo crear un `CHANGELOG` o ampliar el `README` con más detalles.
       parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
