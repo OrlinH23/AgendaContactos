@@ -1,4 +1,4 @@
-import { Contacto } from '../../Interfaces/contacto.interface';
+import type { Contacto } from '../../Interfaces/contacto.interface';
 
 const STORAGE_KEY = 'agenda_contactos_v1';
 
