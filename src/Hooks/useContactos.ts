@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import type { Contacto } from "../../Interfaces/contacto.interface";
 import * as service from "../services/contactService";
 
@@ -14,19 +15,51 @@ export function useContactos() {
     if (id) {
       const updated: Contacto = { id, ...data } as Contacto;
       service.updateContact(updated);
+
+      Swal.fire({
+        title: "Contacto actualizado",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     } else {
       service.addContact(data);
+
+      Swal.fire({
+        title: "Contacto guardado",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     }
 
     setContacts(service.getContacts());
     setEditing(null);
   }
 
-  function handleDelete(id: string) {
-    if (!confirm("Eliminar contacto?")) return;
+  async function handleDelete(id: string) {
+    const result = await Swal.fire({
+      title: "¿Eliminar contacto?",
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#dc2626",
+    });
+
+    if (!result.isConfirmed) return;
 
     service.deleteContact(id);
     setContacts(service.getContacts());
+
+    Swal.fire({
+      title: "Eliminado",
+      text: "El contacto fue eliminado correctamente.",
+      icon: "success",
+      timer: 1500,
+      showConfirmButton: false,
+    });
   }
 
   function handleEdit(c: Contacto) {
